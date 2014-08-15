@@ -37,12 +37,13 @@ namespace Assets.Scripts
 
         void OnTriggerEnter2D(Collider2D col)
         {
-            var person = col.transform.GetComponent<Person>();
-            if (person != null && !person.IsDead)
+            var obj = col.transform.GetComponent<BreakableObject>();
+            if (obj != null && !obj.IsBroken)
             {
-                person.Kill(_spawnPosition, _distance);
-                _destroyTrigger = true;
+                obj.Break(_spawnPosition, _distance);
             }
+
+            _destroyTrigger = true;
         }
     }
 }
