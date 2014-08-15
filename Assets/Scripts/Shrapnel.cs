@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Shrapnel : MonoBehaviour
 {
@@ -8,15 +10,22 @@ public class Shrapnel : MonoBehaviour
     public float MinSpeed = 5;
     public float MaxSpeed = 10;
 
+    private Vector3 _spawnPosition;
+    public float MaxDistance = 5;
+
     void Start()
     {
         _rotation = Random.Range(0, 360);
-        _speed = Random.Range(5, 10);
+        _speed = Random.Range(MinSpeed, MaxSpeed);
+        _spawnPosition = transform.position;
     }
 
     void Update()
     {
-        // move piece of shrapnel by speed in direction
-        // remove after certain time/ticks/whatever I settle on
+        var frameSpeed = _speed * Time.deltaTime;
+        transform.Translate((float)Math.Cos(_rotation) * frameSpeed, (float)Math.Sin(_rotation) * frameSpeed, 0);
+
+        if(Vector3.Distance(transform.position, _spawnPosition) > MaxDistance)
+            Destroy(transform.gameObject);
     }
 }
