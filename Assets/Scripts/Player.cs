@@ -7,7 +7,8 @@ namespace Assets.Scripts
     {
         public bool IsDead = false;
         public float MoveSpeed = 1.5f;
-        public int ShrapnelCount = 25;
+        public int ShrapnelCount = 0;
+        public float KillRadius = 2.5f;
 
         void Update()
         {
@@ -25,11 +26,20 @@ namespace Assets.Scripts
         {
             IsDead = true;
 
+            // Spawn Shrapnel
             Enumerable.Range(0, ShrapnelCount).Each(x =>
             {
                 var s = (GameObject)Instantiate(Resources.Load("Objects/Shrapnel"));
                 s.transform.position = transform.position;
             });
+
+            // Destroy anything within kill radius
+            FindObjectsOfType<Person>().Each(x =>
+            {
+                var distance = Vector3.Distance(x.transform.position, transform.position);
+                if(distance <= KillRadius) x.Kill(transform.position, distance);
+            });
+
         }
     }
 }
