@@ -7,7 +7,7 @@ namespace Assets.Scripts
     {
         public bool IsDead = false;
         public float MoveSpeed = 1.5f;
-        public int ShrapnelCount = 10;
+        public int ShrapnelCount = 25;
 
         void Update()
         {
