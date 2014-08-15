@@ -24,7 +24,6 @@ namespace Assets.Scripts
             _rotation = Random.Range(0, 360);
             _speed = Random.Range(MinSpeed, MaxSpeed);
             _spawnPosition = transform.position;
-            transform.Rotate(0, _rotation, 0);
         }
 
         void Update()
@@ -39,9 +38,11 @@ namespace Assets.Scripts
         void OnTriggerEnter2D(Collider2D col)
         {
             var person = col.transform.GetComponent<Person>();
-            if (person != null && !person.IsDead) person.Kill(_spawnPosition, _distance);
-
-            _destroyTrigger = true;
+            if (person != null && !person.IsDead)
+            {
+                person.Kill(_spawnPosition, _distance);
+                _destroyTrigger = true;
+            }
         }
     }
 }
