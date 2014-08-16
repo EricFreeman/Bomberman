@@ -41,9 +41,8 @@ namespace Assets.Scripts
             if (obj != null && !obj.IsBroken)
             {
                 obj.Break(_spawnPosition, _distance);
+                _destroyTrigger = true;
             }
-
-            _destroyTrigger = true;
         }
     }
 }
