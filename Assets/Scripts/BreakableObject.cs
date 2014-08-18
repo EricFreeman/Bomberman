@@ -1,24 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
     public class BreakableObject : MonoBehaviour
     {
+        [HideInInspector]
         public bool IsBroken;
-        public float Force = 100;
 
+        // Object Properties
+        public float Force = 100;
+        public List<Sprite> BrokenSkin;
+        public int? SpecificSkin;
+
+        // Particle Properties
         public List<Sprite> Particles;
+        public List<int> ParticleWeight; 
         public int ParticleCount = 5;
 
         public float MinDistance;
         public float MaxDistance;
         public float MinSpeed;
         public float MaxSpeed;
-
-        public List<Sprite> BrokenSkin;
-        public int? SpecificSkin;
 
         public void Break(Vector3 position, float distance)
         {
@@ -43,7 +48,11 @@ namespace Assets.Scripts
                     var p = obj.GetComponent<Particle>();
                     p.Speed = Random.Range(MinSpeed, MaxSpeed);
                     p.Distance = Random.Range(MinSpeed, MaxSpeed);
-                    p.GetComponent<SpriteRenderer>().sprite = Particles[Random.Range(0, Particles.Count)];
+
+                    var particle = GetRandomParticle();
+                    p.GetComponent<SpriteRenderer>().sprite = particle;
+                    // TODO: Remove this super hack until I can make a class encapsulating the sprite images with their weight and sort order instead of this hacky crap
+                    p.GetComponent<SpriteRenderer>().sortingOrder = particle.name == "Blood" ? 3 : 4;
                 });
             }
         }
@@ -54,6 +63,23 @@ namespace Assets.Scripts
             GetComponent<SpriteRenderer>().sprite = SpecificSkin.HasValue ?
                 BrokenSkin[SpecificSkin.Value] : 
                 BrokenSkin[Random.Range(0, BrokenSkin.Count)];
+        }
+
+        private Sprite GetRandomParticle()
+        {
+            if(ParticleWeight == null || ParticleWeight.Count == 0)
+                return Particles[Random.Range(0, Particles.Count)];
+
+            var totalWeights = ParticleWeight.Sum();
+            var selectedWeight = Random.Range(0, totalWeights);
+
+            for(var i = 0; i < ParticleWeight.Count; i++)
+            {
+                selectedWeight -= ParticleWeight[i];
+                if (selectedWeight <= 0) return Particles[i];
+            }
+
+            return Particles[0];
         }
     }
 }
