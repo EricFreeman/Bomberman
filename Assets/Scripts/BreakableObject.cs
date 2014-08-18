@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Remoting.Messaging;
 using Assets.Scripts.Particles;
 using UnityEngine;
 
@@ -19,13 +17,19 @@ namespace Assets.Scripts
 
         // Particle Properties
         public List<Sprite> Particles;
-        public List<int> ParticleWeight; 
         public int ParticleCount = 5;
+
+        public ParticleConfiguratior Pc;
 
         public float MinDistance;
         public float MaxDistance;
         public float MinSpeed;
         public float MaxSpeed;
+
+        public void Start()
+        {
+            Pc = new ParticleConfiguratior(Particles);
+        }
 
         public void Break(Vector3 position, float distance)
         {
@@ -36,6 +40,14 @@ namespace Assets.Scripts
 
             SpawnParticles();
             ChangeSkin();
+        }
+
+        private void ChangeSkin()
+        {
+            if (BrokenSkin.Count == 0) return;
+            GetComponent<SpriteRenderer>().sprite = SpecificSkin.HasValue ?
+                BrokenSkin[SpecificSkin.Value] :
+                BrokenSkin[Random.Range(0, BrokenSkin.Count)];
         }
 
         private void SpawnParticles()
@@ -51,43 +63,12 @@ namespace Assets.Scripts
                     p.Speed = Random.Range(MinSpeed, MaxSpeed);
                     p.Distance = Random.Range(MinSpeed, MaxSpeed);
 
-                    var particle = GetRandomParticle();
-                    var particleProperties = LoadParticleProperties(particle.name);
+                    var particle = Pc.GetRandomParticle();
+                    var particleProperties = Pc.GetProperties(particle);
                     p.GetComponent<SpriteRenderer>().sprite = particle;
                     p.GetComponent<SpriteRenderer>().sortingOrder = particleProperties.SortOrder;
                 });
             }
-        }
-
-        private void ChangeSkin()
-        {
-            if (BrokenSkin.Count == 0) return;
-            GetComponent<SpriteRenderer>().sprite = SpecificSkin.HasValue ?
-                BrokenSkin[SpecificSkin.Value] : 
-                BrokenSkin[Random.Range(0, BrokenSkin.Count)];
-        }
-
-        private Sprite GetRandomParticle()
-        {
-            if(ParticleWeight == null || ParticleWeight.Count == 0)
-                return Particles[Random.Range(0, Particles.Count)];
-
-            var totalWeights = ParticleWeight.Sum();
-            var selectedWeight = Random.Range(0, totalWeights);
-
-            for(var i = 0; i < ParticleWeight.Count; i++)
-            {
-                selectedWeight -= ParticleWeight[i];
-                if (selectedWeight <= 0) return Particles[i];
-            }
-
-            return Particles[0];
-        }
-
-        private IParticle LoadParticleProperties(string particleName)
-        {
-            var c = (IParticle)Assembly.GetExecutingAssembly().CreateInstance("Assets.Scripts.Particles." + particleName + "Particle");
-            return c ?? new DefaultParticle();
         }
     }
 }

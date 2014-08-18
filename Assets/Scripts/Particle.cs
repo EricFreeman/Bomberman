@@ -20,7 +20,6 @@ namespace Assets.Scripts
         public void Start()
         {
             _rotation = Random.Range(0, 360);
-
             _startPosition = transform.position;
         }
 
