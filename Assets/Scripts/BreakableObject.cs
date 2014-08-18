@@ -17,6 +17,9 @@ namespace Assets.Scripts
         public float MinSpeed;
         public float MaxSpeed;
 
+        public List<Sprite> BrokenSkin;
+        public int? SpecificSkin;
+
         public void Break(Vector3 position, float distance)
         {
             IsBroken = true;
@@ -24,6 +27,12 @@ namespace Assets.Scripts
             var direction = position - transform.position;
             rigidbody2D.AddForceAtPosition(direction.normalized * Force * -1, transform.position);
 
+            SpawnParticles();
+            ChangeSkin();
+        }
+
+        private void SpawnParticles()
+        {
             if (Particles.Count > 0)
             {
                 Enumerable.Range(0, ParticleCount).Each(x =>
@@ -37,6 +46,14 @@ namespace Assets.Scripts
                     p.GetComponent<SpriteRenderer>().sprite = Particles[Random.Range(0, Particles.Count)];
                 });
             }
+        }
+
+        private void ChangeSkin()
+        {
+            if (BrokenSkin.Count == 0) return;
+            GetComponent<SpriteRenderer>().sprite = SpecificSkin.HasValue ?
+                BrokenSkin[SpecificSkin.Value] : 
+                BrokenSkin[Random.Range(0, BrokenSkin.Count)];
         }
     }
 }

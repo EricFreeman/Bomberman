@@ -9,7 +9,12 @@ namespace Assets.Scripts
         public void Start()
         {
             if (Skins.Length > 0)
-                transform.GetComponent<SpriteRenderer>().sprite = Skins[Random.Range(0, Skins.Length)];
+            {
+                var randomSkin = Random.Range(0, Skins.Length);
+
+                transform.GetComponent<SpriteRenderer>().sprite = Skins[randomSkin];
+                GetComponent<BreakableObject>().SpecificSkin = randomSkin;
+            }
         }
     }
 }
