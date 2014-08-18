@@ -1,22 +1,25 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts
 {
-    public class Blood : MonoBehaviour
+    public class Particle : MonoBehaviour
     {
-        public float Rotation;
+        private float _rotation;
+
+        [HideInInspector]
         public float Distance;
+
+        [HideInInspector]
         public float Speed;
 
         private Vector3 _startPosition;
 
         public void Start()
         {
-            Rotation = Random.Range(0, 360);
-            Distance = Random.Range(0, .5f);
-            Speed = Random.Range(1, 3);
+            _rotation = Random.Range(0, 360);
 
             _startPosition = transform.position;
         }
@@ -26,7 +29,7 @@ namespace Assets.Scripts
             if (!(Vector3.Distance(transform.position, _startPosition) < Distance)) return;
 
             var frameSpeed = Speed * Time.deltaTime;
-            transform.Translate((float)Math.Cos(Rotation) * frameSpeed, (float)Math.Sin(Rotation) * frameSpeed, 0);
+            transform.Translate((float)Math.Cos(_rotation) * frameSpeed, (float)Math.Sin(_rotation) * frameSpeed, 0);
         }
     }
 }
