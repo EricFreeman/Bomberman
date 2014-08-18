@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Remoting.Messaging;
+using Assets.Scripts.Particles;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -50,9 +52,9 @@ namespace Assets.Scripts
                     p.Distance = Random.Range(MinSpeed, MaxSpeed);
 
                     var particle = GetRandomParticle();
+                    var particleProperties = LoadParticleProperties(particle.name);
                     p.GetComponent<SpriteRenderer>().sprite = particle;
-                    // TODO: Remove this super hack until I can make a class encapsulating the sprite images with their weight and sort order instead of this hacky crap
-                    p.GetComponent<SpriteRenderer>().sortingOrder = particle.name == "Blood" ? 3 : 4;
+                    p.GetComponent<SpriteRenderer>().sortingOrder = particleProperties.SortOrder;
                 });
             }
         }
@@ -80,6 +82,12 @@ namespace Assets.Scripts
             }
 
             return Particles[0];
+        }
+
+        private IParticle LoadParticleProperties(string particleName)
+        {
+            var c = (IParticle)Assembly.GetExecutingAssembly().CreateInstance("Assets.Scripts.Particles." + particleName + "Particle");
+            return c ?? new DefaultParticle();
         }
     }
 }
