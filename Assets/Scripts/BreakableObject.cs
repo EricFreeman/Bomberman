@@ -61,20 +61,23 @@ namespace Assets.Scripts
                     var obj = (GameObject) Instantiate(Resources.Load("Particles/Particle"));
                     obj.transform.position = transform.position;
 
-                    ConfigureParticle(obj.GetComponent<Particle>());
+                    ConfigureParticle(obj);
                 });
             }
         }
 
-        private void ConfigureParticle(Particle p)
+        private void ConfigureParticle(GameObject obj)
         {
-            var particle = Pc.GetRandomParticle();
-            var particleProperties = Pc.GetProperties(particle);
+            var p = obj.GetComponent<Particle>();
+            var randomParticle = Pc.GetRandomParticle();
+            var particleProperties = Pc.GetProperties(randomParticle);
 
             p.Speed = particleProperties.RandomSpeed();
             p.Distance = particleProperties.RandomDistance();
-            p.GetComponent<SpriteRenderer>().sprite = particle;
+            p.GetComponent<SpriteRenderer>().sprite = randomParticle;
             p.GetComponent<SpriteRenderer>().sortingOrder = particleProperties.SortOrder;
+
+            particleProperties.AssignEffects(obj);
         }
 
         #endregion

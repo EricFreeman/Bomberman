@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.Particles.Effects;
 using UnityEngine;
 
 namespace Assets.Scripts.Particles
 {
-    public class BloodParticle : IParticle
+    public class SparkParticle : IParticle
     {
-        #region IParticle Properties
+        #region Interface Properties
 
         public int SortOrder { get; set; }
         public int Weight { get; set; }
@@ -16,25 +16,23 @@ namespace Assets.Scripts.Particles
         public float MinDistance { get; set; }
         public float MaxDistance { get; set; }
 
-        public List<MonoBehaviour> Effects { get; set; }
-
         #endregion
 
-        public BloodParticle()
+        public SparkParticle()
         {
-            SortOrder = 3;
+            SortOrder = 5;
             Weight = 10;
 
-            MinSpeed = .3f;
-            MaxSpeed = .5f;
+            MinDistance = 3f;
+            MaxDistance = 4f;
 
-            MinDistance = 0;
-            MaxDistance = .6f;
+            MinSpeed = 1f;
+            MaxSpeed = 1.5f;
         }
 
         public void AssignEffects(GameObject obj)
         {
-            
+            obj.AddComponent<Fade>().FadeTicks = 30;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Assets.Scripts.Particles
+﻿using UnityEngine;
+
+namespace Assets.Scripts.Particles
 {
     public interface IParticle
     {
@@ -10,5 +12,7 @@
 
         float MinDistance { get; set; }
         float MaxDistance { get; set; }
+
+        void AssignEffects(GameObject obj);
     }
 }

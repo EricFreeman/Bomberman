@@ -1,4 +1,6 @@
-﻿namespace Assets.Scripts.Particles
+﻿using UnityEngine;
+
+namespace Assets.Scripts.Particles
 {
     public class DefaultParticle : IParticle
     {
@@ -26,5 +28,7 @@
             MinDistance = 0;
             MaxDistance = .2f;
         }
+
+        public virtual void AssignEffects(GameObject obj) { }
     }
 }
