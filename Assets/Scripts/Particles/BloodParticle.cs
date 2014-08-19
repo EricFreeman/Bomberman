@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Particles.Effects;
 using UnityEngine;
 
 namespace Assets.Scripts.Particles
@@ -34,7 +35,8 @@ namespace Assets.Scripts.Particles
 
         public void AssignEffects(GameObject obj)
         {
-            
+            obj.AddComponent<Grow>().GrowTicks = 60;
+            obj.GetComponent<Grow>().GrowPercentage = .3f;
         }
     }
 }
