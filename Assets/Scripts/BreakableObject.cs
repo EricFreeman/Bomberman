@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Particles;
+using Assets.Scripts.Particles.Effects;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
     public class BreakableObject : MonoBehaviour
     {
+        #region Properties
+
         [HideInInspector]
         public bool IsBroken;
 
@@ -21,7 +24,9 @@ namespace Assets.Scripts
 
         public ParticleConfiguratior Pc;
 
-        public void Start()
+        #endregion
+
+        void Start()
         {
             Pc = new ParticleConfiguratior(Particles);
         }
@@ -44,6 +49,8 @@ namespace Assets.Scripts
                 BrokenSkin[SpecificSkin.Value] :
                 BrokenSkin[Random.Range(0, BrokenSkin.Count)];
         }
+
+        #region Particles
 
         private void SpawnParticles()
         {
@@ -69,5 +76,7 @@ namespace Assets.Scripts
             p.GetComponent<SpriteRenderer>().sprite = particle;
             p.GetComponent<SpriteRenderer>().sortingOrder = particleProperties.SortOrder;
         }
+
+        #endregion
     }
 }

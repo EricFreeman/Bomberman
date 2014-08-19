@@ -2,6 +2,8 @@
 {
     public class BloodParticle : IParticle
     {
+        #region IParticle Properties
+
         public int SortOrder { get; set; }
         public int Weight { get; set; }
 
@@ -10,6 +12,8 @@
 
         public float MinDistance { get; set; }
         public float MaxDistance { get; set; }
+
+        #endregion
 
         public BloodParticle()
         {
