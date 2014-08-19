@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Scripts.Particles;
+
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts
 {
@@ -11,6 +14,16 @@ namespace Assets.Scripts
             {
                 action(e);
             }
+        }
+
+        public static float RandomSpeed(this IParticle p)
+        {
+            return Random.Range(p.MinSpeed, p.MaxSpeed);
+        }
+
+        public static float RandomDistance(this IParticle p)
+        {
+            return Random.Range(p.MinDistance, p.MaxDistance);
         }
     }
 }

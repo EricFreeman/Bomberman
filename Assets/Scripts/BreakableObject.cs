@@ -21,11 +21,6 @@ namespace Assets.Scripts
 
         public ParticleConfiguratior Pc;
 
-        public float MinDistance;
-        public float MaxDistance;
-        public float MinSpeed;
-        public float MaxSpeed;
-
         public void Start()
         {
             Pc = new ParticleConfiguratior(Particles);
@@ -59,16 +54,20 @@ namespace Assets.Scripts
                     var obj = (GameObject) Instantiate(Resources.Load("Particles/Particle"));
                     obj.transform.position = transform.position;
 
-                    var p = obj.GetComponent<Particle>();
-                    p.Speed = Random.Range(MinSpeed, MaxSpeed);
-                    p.Distance = Random.Range(MinSpeed, MaxSpeed);
-
-                    var particle = Pc.GetRandomParticle();
-                    var particleProperties = Pc.GetProperties(particle);
-                    p.GetComponent<SpriteRenderer>().sprite = particle;
-                    p.GetComponent<SpriteRenderer>().sortingOrder = particleProperties.SortOrder;
+                    ConfigureParticle(obj.GetComponent<Particle>());
                 });
             }
+        }
+
+        private void ConfigureParticle(Particle p)
+        {
+            var particle = Pc.GetRandomParticle();
+            var particleProperties = Pc.GetProperties(particle);
+
+            p.Speed = particleProperties.RandomSpeed();
+            p.Distance = particleProperties.RandomDistance();
+            p.GetComponent<SpriteRenderer>().sprite = particle;
+            p.GetComponent<SpriteRenderer>().sortingOrder = particleProperties.SortOrder;
         }
     }
 }
