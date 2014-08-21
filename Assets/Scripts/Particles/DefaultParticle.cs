@@ -26,7 +26,7 @@ namespace Assets.Scripts.Particles
             MaxSpeed = .3f;
 
             MinDistance = 0;
-            MaxDistance = .2f;
+            MaxDistance = .4f;
         }
 
         public virtual void AssignEffects(GameObject obj) { }

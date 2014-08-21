@@ -35,7 +35,7 @@ namespace Assets.Scripts
             IsBroken = true;
 
             var direction = position - transform.position;
-            rigidbody2D.AddForceAtPosition(direction.normalized * Force * -1, transform.position);
+            rigidbody2D.AddForceAtPosition(direction.normalized * Force * -1, position);
 
             SpawnParticles();
             ChangeSkin();
