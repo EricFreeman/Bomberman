@@ -14,9 +14,17 @@ namespace Assets.Scripts
         public int MinSpawnDelay;
         public int MaxSpawnDelay;
 
+        public bool OneShot;
+        public int SpawnAmount = 1;
+
         public float SpawnRotation;
 
         private int _spawnDelay;
+
+        void Start()
+        {
+            _spawnDelay = Random.Range(MinSpawnDelay, MaxSpawnDelay);
+        }
 
         void Update()
         {
@@ -24,19 +32,24 @@ namespace Assets.Scripts
 
             SpawnObject();
             _spawnDelay = Random.Range(MinSpawnDelay, MaxSpawnDelay);
+
+            if(OneShot) Destroy(gameObject);
         }
 
         private void SpawnObject()
         {
-            var obj = ToSpawn[Random.Range(0, ToSpawn.Count)];
+            Enumerable.Range(0, SpawnAmount).Each(x =>
+            {
+                var obj = ToSpawn[Random.Range(0, ToSpawn.Count)];
 
-            var offset = GetSpawnOffset();
-            var newObj = (GameObject)Instantiate(obj.gameObject, 
-                transform.position + offset, 
-                Quaternion.Euler(0, 0, SpawnRotation));
+                var offset = GetSpawnOffset();
+                var newObj = (GameObject)Instantiate(obj.gameObject,
+                    transform.position + offset,
+                    Quaternion.Euler(0, 0, SpawnRotation));
 
-            newObj.AddComponent<WaypointMovement>().Waypoints = CreateNewWaypointList(offset);
-            newObj.GetComponent<WaypointMovement>().MoveSpeed = 1;
+                newObj.AddComponent<WaypointMovement>().Waypoints = CreateNewWaypointList(offset);
+                newObj.GetComponent<WaypointMovement>().MoveSpeed = 1; 
+            });
         }
 
         private Vector3 GetSpawnOffset()

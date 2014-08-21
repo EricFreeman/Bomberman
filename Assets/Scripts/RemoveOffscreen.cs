@@ -6,7 +6,8 @@ namespace Assets.Scripts
     {
         void Update()
         {
-            if (!renderer.isVisible)
+            // 1 sec check is a hack to fix it removing all npcs on load
+            if (!renderer.isVisible && Time.fixedTime > 1)
                 DestroyImmediate(gameObject);
         }
     }
