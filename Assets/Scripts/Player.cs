@@ -1,9 +1,10 @@
 ﻿using System.Linq;
+using Assets.Scripts.Events;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour, IListener<ObjectBrokenMessage>
     {
         public bool IsDead = false;
         public float MoveSpeed = 1.5f;
@@ -39,7 +40,11 @@ namespace Assets.Scripts
                 var distance = Vector3.Distance(x.transform.position, transform.position);
                 if(distance <= KillRadius) x.Break(transform.position, distance);
             });
+        }
 
+        public void Handle(ObjectBrokenMessage message)
+        {
+            Debug.Log("Points Gained: " + message.Points);
         }
     }
 }

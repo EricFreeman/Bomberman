@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Events;
 using Assets.Scripts.Particles;
 using UnityEngine;
 
@@ -39,6 +40,8 @@ namespace Assets.Scripts
 
             SpawnParticles();
             ChangeSkin();
+
+            EventAggregator.SendMessage(new ObjectBrokenMessage {Points = 5});
         }
 
         private void ChangeSkin()

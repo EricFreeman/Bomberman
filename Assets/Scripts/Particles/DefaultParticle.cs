@@ -22,11 +22,11 @@ namespace Assets.Scripts.Particles
             SortOrder = 4;
             Weight = 1;
 
-            MinSpeed = .1f;
-            MaxSpeed = .3f;
+            MinSpeed = .6f;
+            MaxSpeed = .8f;
 
             MinDistance = 0;
-            MaxDistance = .4f;
+            MaxDistance = .7f;
         }
 
         public virtual void AssignEffects(GameObject obj) { }
