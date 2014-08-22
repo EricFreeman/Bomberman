@@ -11,6 +11,11 @@ namespace Assets.Scripts
         public int ShrapnelCount = 0;
         public float KillRadius = .75f;
 
+        void Start()
+        {
+            EventAggregator.UpdateCache<ObjectBrokenMessage>();
+        }
+
         void Update()
         {
             if (IsDead) return;
