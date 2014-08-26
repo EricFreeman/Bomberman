@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Events;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class Spawner : MonoBehaviour
+    public class Spawner : MonoBehaviour, IListener<TurnOffSpawnersMessage>
     {
+        #region Properties
+
         public List<Transform> ToSpawn;
         public List<Vector3> Waypoints;
         public float XVariation;
@@ -21,20 +24,21 @@ namespace Assets.Scripts
 
         private int _spawnDelay;
 
-        void Start()
-        {
-            _spawnDelay = Random.Range(MinSpawnDelay, MaxSpawnDelay);
-        }
+        public bool IsDeactivated;
+
+        #endregion
 
         void Update()
         {
-            if (ToSpawn.Count == 0 || _spawnDelay-- > 0) return;
+            if (ToSpawn.Count == 0 || _spawnDelay-- > 0 || IsDeactivated) return;
 
             SpawnObject();
             _spawnDelay = Random.Range(MinSpawnDelay, MaxSpawnDelay);
 
             if(OneShot) Destroy(gameObject);
         }
+
+        #region Spawning
 
         private void SpawnObject()
         {
@@ -61,5 +65,16 @@ namespace Assets.Scripts
         {
             return Waypoints.Select(point => point + offset).ToList();
         }
+
+        #endregion
+
+        #region Event Handlers
+
+        public void Handle(TurnOffSpawnersMessage message)
+        {
+            IsDeactivated = true;
+        }
+
+        #endregion
     }
 }

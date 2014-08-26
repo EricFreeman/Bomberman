@@ -17,6 +17,7 @@ namespace Assets.Scripts
         public float Force = 100;
         public List<Sprite> BrokenSkin;
         public int? SpecificSkin;
+        public int Points;
 
         // Particle Properties
         public List<Sprite> Particles;
@@ -41,7 +42,7 @@ namespace Assets.Scripts
             SpawnParticles();
             ChangeSkin();
 
-            EventAggregator.SendMessage(new ObjectBrokenMessage {Points = 5});
+            EventAggregator.SendMessage(new ObjectBrokenMessage {Points = Points});
         }
 
         private void ChangeSkin()

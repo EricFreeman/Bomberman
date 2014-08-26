@@ -45,6 +45,8 @@ namespace Assets.Scripts
                 var distance = Vector3.Distance(x.transform.position, transform.position);
                 if(distance <= KillRadius) x.Break(transform.position, distance);
             });
+
+            EventAggregator.SendMessage(new TurnOffSpawnersMessage());
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Assets.Scripts
 
         public static string ToScoreFormat(this string s, int score)
         {
-            return s.ToFormat(score.ToString("N1"));
+            return s.ToFormat(score.ToString("N0"));
         }
     }
 }
