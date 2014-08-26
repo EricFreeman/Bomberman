@@ -25,5 +25,15 @@ namespace Assets.Scripts
         {
             return Random.Range(p.MinDistance, p.MaxDistance);
         }
+
+        public static string ToFormat(this string s, params object[] parmaters)
+        {
+            return string.Format(s, parmaters);
+        }
+
+        public static string ToScoreFormat(this string s, int score)
+        {
+            return s.ToFormat(score.ToString("N1"));
+        }
     }
 }
